@@ -140,6 +140,11 @@ export class GameRoom {
     const correct = optionIndex === q.correct;
     const points = computePoints(correct, elapsed, q.timeLimit);
     this.game.answers[questionIndex][playerId] = { optionIndex, points, answeredAt: Date.now() };
+    const answered = Object.keys(this.game.answers[questionIndex]).length;
+    const total = Object.keys(this.game.players).length;
+    if (answered >= total) {
+      this.game.phase = "reveal";
+    }
     await this.save();
     return json({ ok: true });
   }

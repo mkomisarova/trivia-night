@@ -399,6 +399,8 @@
         if (!timerEl) { render(); return; }
         var remaining = clamp(state.question.timeLimit - (now() - state.question.startedAt), 0, state.question.timeLimit);
         if (remaining <= 0) {
+          clearInterval(ui.tickHandle);
+          ui.tickHandle = null;
           render();
         } else {
           var svgEl = app.querySelector(".timer-wrap svg circle:last-child");
