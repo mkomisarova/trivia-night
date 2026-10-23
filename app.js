@@ -21,6 +21,14 @@
   var state = null;       // last server /api/state response
   var clockOffset = 0;    // serverNow - Date.now() at last poll
   var loadError = false;
+  var lastStateSignature = null;
+
+  function stateSignature(s) {
+    if (!s) return "null";
+    var copy = Object.assign({}, s);
+    delete copy.serverNow; // changes every poll; not a real state change
+    return JSON.stringify(copy);
+  }
 
   var ui = {
     pinOk: false,
@@ -557,6 +565,7 @@
   // ---------- polling ----------
 
   async function poll() {
+    var prevLoadError = loadError;
     try {
       var qs = playerId ? "?playerId=" + encodeURIComponent(playerId) : "";
       var before = Date.now();
@@ -567,7 +576,10 @@
     } catch (e) {
       loadError = true;
     }
-    render(true);
+    var sig = stateSignature(state);
+    var changed = sig !== lastStateSignature || loadError !== prevLoadError;
+    lastStateSignature = sig;
+    if (changed) render(true);
   }
 
   // ---------- boot ----------
