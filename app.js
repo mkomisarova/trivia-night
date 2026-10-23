@@ -60,7 +60,10 @@
 
   // ---------- render ----------
 
-  function render() {
+  function render(fromPoll) {
+    if (fromPoll && document.activeElement && app.contains(document.activeElement) && document.activeElement.matches("input[data-field]")) {
+      return; // don't blow away a form the user is actively typing into
+    }
     if (!WORKER_URL || WORKER_URL.indexOf("YOUR-SUBDOMAIN") !== -1) {
       app.innerHTML = renderNotConfigured();
       return;
@@ -506,6 +509,15 @@
     else if (action === "select-option") selectOption(parseInt(btn.getAttribute("data-option"), 10));
   });
 
+  app.addEventListener("input", function (e) {
+    var field = e.target.closest("input[data-field]");
+    if (!field) return;
+    var name = field.getAttribute("data-field");
+    if (name === "pin") ui.pinDraft = field.value;
+    else if (name === "name") ui.nameDraft = field.value;
+    else if (name === "hostpass") ui.hostPassDraft = field.value;
+  });
+
   app.addEventListener("submit", function (e) {
     var form = e.target.closest("form");
     if (!form) return;
@@ -521,7 +533,7 @@
       submitName(nameField.value);
     } else if (kind === "hostpass") {
       var passField = form.querySelector('[data-field="hostpass"]');
-      var pass = passField.value;
+      var pass = passField.value.trim();
       ui.hostPassDraft = pass;
       verifyHostSecret(pass).then(function (ok) {
         if (ok) {
@@ -550,7 +562,7 @@
     } catch (e) {
       loadError = true;
     }
-    render();
+    render(true);
   }
 
   // ---------- boot ----------
