@@ -204,7 +204,7 @@
       '<span class="eyebrow">Host login</span>' +
       '<h2 class="display" style="font-size:22px; margin-top:6px;">Enter the host passphrase</h2>' +
       '<form data-form="hostpass" class="col" style="margin-top:18px;">' +
-      '<input type="password" placeholder="Passphrase" data-field="hostpass" value="' + esc(ui.hostPassDraft) + '" autofocus>' +
+      '<input type="password" placeholder="Passphrase" data-field="hostpass" value="' + esc(ui.hostPassDraft) + '" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" autofocus>' +
       (ui.hostPassError ? '<p class="error-text">' + esc(ui.hostPassError) + '</p>' : "") +
       '<button class="btn btn-accent btn-block" type="submit">Continue</button>' +
       '</form>' +
