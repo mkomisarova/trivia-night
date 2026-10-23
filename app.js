@@ -204,7 +204,8 @@
       '<span class="eyebrow">Host login</span>' +
       '<h2 class="display" style="font-size:22px; margin-top:6px;">Enter the host passphrase</h2>' +
       '<form data-form="hostpass" class="col" style="margin-top:18px;">' +
-      '<input type="password" placeholder="Passphrase" data-field="hostpass" value="' + esc(ui.hostPassDraft) + '" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" autofocus>' +
+      '<input type="text" name="trivia-host-passphrase" placeholder="Passphrase" data-field="hostpass" value="' + esc(ui.hostPassDraft) + '" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" autofocus>' +
+      '<p class="muted" style="margin-top:8px; font-size:13px;">Typed: <span class="mono" id="hostpass-echo">' + esc(ui.hostPassDraft || "(empty)") + '</span></p>' +
       (ui.hostPassError ? '<p class="error-text">' + esc(ui.hostPassError) + '</p>' : "") +
       '<button class="btn btn-accent btn-block" type="submit">Continue</button>' +
       '</form>' +
@@ -515,7 +516,11 @@
     var name = field.getAttribute("data-field");
     if (name === "pin") ui.pinDraft = field.value;
     else if (name === "name") ui.nameDraft = field.value;
-    else if (name === "hostpass") ui.hostPassDraft = field.value;
+    else if (name === "hostpass") {
+      ui.hostPassDraft = field.value;
+      var echo = document.getElementById("hostpass-echo");
+      if (echo) echo.textContent = field.value || "(empty)";
+    }
   });
 
   app.addEventListener("submit", function (e) {
