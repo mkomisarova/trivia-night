@@ -181,6 +181,7 @@
       '</div>' +
       '<div class="panel">' +
       renderOptionTiles(q, { interactive: false, reveal: true }) +
+      renderAnswerStats(q) +
       '<button class="btn btn-accent btn-block" style="margin-top:14px;" data-action="host-leaderboard">Show leaderboard</button>' +
       '</div>';
   }
@@ -294,7 +295,7 @@
       (mine ? (gotIt ? "+" + mine.points + " points — correct!" : "Incorrect") : "Time's up — no answer submitted") +
       '</p>' +
       '</div>' +
-      '<div class="panel">' + renderOptionTiles(q, { interactive: false, reveal: true, myOption: mine ? mine.optionIndex : null }) + '</div>';
+      '<div class="panel">' + renderOptionTiles(q, { interactive: false, reveal: true, myOption: mine ? mine.optionIndex : null }) + renderAnswerStats(q) + '</div>';
   }
 
   function renderPlayerLeaderboard() {
@@ -341,6 +342,27 @@
       '</svg>' +
       '<div class="timer-num mono" style="color:' + color + ';">' + Math.ceil(remaining / 1000) + '</div>' +
       '</div>';
+  }
+
+  function renderAnswerStats(q) {
+    if (!q.counts) return "";
+    var total = q.counts.reduce(function (a, b) { return a + b; }, 0);
+    var html = '<div class="answer-stats">';
+    for (var i = 0; i < q.options.length; i++) {
+      var count = q.counts[i];
+      var pct = total ? Math.round((count / total) * 100) : 0;
+      var isCorrect = i === q.correct;
+      html += '<div class="stat-row">' +
+        '<span class="stat-label">' + SHAPES[i] + '<span>' + esc(q.options[i]) + '</span>' + (isCorrect ? ' <span class="stat-correct-tag">correct</span>' : "") + '</span>' +
+        '<div class="bar-track">' +
+        '<div class="bar-fill opt-' + i + '" style="width:' + pct + '%;"></div>' +
+        '</div>' +
+        '<span class="stat-count mono">' + count + ' (' + pct + '%)</span>' +
+        '</div>';
+    }
+    html += '<p class="muted center" style="margin-top:6px; font-size:12px;">' + total + ' answer' + (total === 1 ? "" : "s") + '</p>';
+    html += '</div>';
+    return html;
   }
 
   function renderOptionTiles(q, opts) {

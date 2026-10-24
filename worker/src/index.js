@@ -98,6 +98,14 @@ export class GameRoom {
     const q = QUESTIONS[this.game.questionIndex];
     if (!q) return null;
     const revealed = this.game.phase === "reveal" || this.game.phase === "leaderboard" || this.game.phase === "final";
+    let counts = null;
+    if (revealed) {
+      counts = q.options.map(() => 0);
+      const qAnswers = this.game.answers[this.game.questionIndex] || {};
+      for (const a of Object.values(qAnswers)) {
+        if (a.optionIndex >= 0 && a.optionIndex < counts.length) counts[a.optionIndex]++;
+      }
+    }
     return {
       index: this.game.questionIndex,
       total: QUESTIONS.length,
@@ -106,6 +114,7 @@ export class GameRoom {
       timeLimit: q.timeLimit,
       startedAt: this.game.questionStartedAt,
       correct: revealed ? q.correct : null,
+      counts,
     };
   }
 
