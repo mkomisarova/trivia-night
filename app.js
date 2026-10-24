@@ -392,22 +392,24 @@
   // ---------- ticker ----------
 
   function startOrStopTicker() {
-    var shouldTick = state && state.phase === "question";
+    var remainingNow = state && state.phase === "question"
+      ? clamp(state.question.timeLimit - (now() - state.question.startedAt), 0, state.question.timeLimit)
+      : 0;
+    var shouldTick = remainingNow > 0;
     if (shouldTick && !ui.tickHandle) {
       ui.tickHandle = setInterval(function () {
-        var timerEl = app.querySelector(".timer-num");
-        if (!timerEl) { render(); return; }
         var remaining = clamp(state.question.timeLimit - (now() - state.question.startedAt), 0, state.question.timeLimit);
         if (remaining <= 0) {
           clearInterval(ui.tickHandle);
           ui.tickHandle = null;
-          render();
-        } else {
-          var svgEl = app.querySelector(".timer-wrap svg circle:last-child");
-          var r = 42, c = 2 * Math.PI * r, frac = remaining / state.question.timeLimit;
-          if (svgEl) svgEl.setAttribute("stroke-dashoffset", c * (1 - frac));
-          timerEl.textContent = Math.ceil(remaining / 1000);
+          return; // the next poll will pick up the server's phase change
         }
+        var timerEl = app.querySelector(".timer-num");
+        if (!timerEl) return;
+        var svgEl = app.querySelector(".timer-wrap svg circle:last-child");
+        var r = 42, c = 2 * Math.PI * r, frac = remaining / state.question.timeLimit;
+        if (svgEl) svgEl.setAttribute("stroke-dashoffset", c * (1 - frac));
+        timerEl.textContent = Math.ceil(remaining / 1000);
       }, 250);
     } else if (!shouldTick && ui.tickHandle) {
       clearInterval(ui.tickHandle);

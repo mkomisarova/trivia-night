@@ -72,6 +72,15 @@ export class GameRoom {
     await this.state.storage.put("game", this.game);
   }
 
+  async checkTimeout() {
+    if (this.game.phase !== "question" || !this.game.questionStartedAt) return;
+    const q = QUESTIONS[this.game.questionIndex];
+    if (q && Date.now() - this.game.questionStartedAt >= q.timeLimit) {
+      this.game.phase = "reveal";
+      await this.save();
+    }
+  }
+
   leaderboard() {
     const totals = {};
     for (const id of Object.keys(this.game.players)) totals[id] = 0;
@@ -189,6 +198,7 @@ export class GameRoom {
     if (request.method === "OPTIONS") return new Response(null, { headers: CORS_HEADERS });
 
     if (url.pathname === "/api/state" && request.method === "GET") {
+      await this.checkTimeout();
       const playerId = url.searchParams.get("playerId");
       return json(this.publicState(playerId));
     }
@@ -198,6 +208,7 @@ export class GameRoom {
     }
 
     if (url.pathname === "/api/answer" && request.method === "POST") {
+      await this.checkTimeout();
       return this.handleAnswer(await request.json());
     }
 
