@@ -2,18 +2,18 @@
 // One global game room (DO instance "main") holds all live state.
 
 const QUESTIONS = [
-  { q: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], correct: 1, timeLimit: 20000 },
-  { q: "What is the capital of France?", options: ["Paris", "Lyon", "Marseille", "Nice"], correct: 0, timeLimit: 20000 },
-  { q: "How many legs does a spider have?", options: ["6", "8"], correct: 1, timeLimit: 15000 },
-  { q: "Which ocean is the largest?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], correct: 2, timeLimit: 20000 },
-  { q: "What is the chemical symbol for gold?", options: ["Au", "Ag", "Gd", "Go"], correct: 0, timeLimit: 20000 },
-  { q: "Who painted the Mona Lisa?", options: ["Michelangelo", "Da Vinci"], correct: 1, timeLimit: 15000 },
-  { q: "What is the smallest prime number?", options: ["0", "1", "2", "3"], correct: 2, timeLimit: 20000 },
-  { q: "Which language has the most native speakers?", options: ["English", "Mandarin", "Spanish", "Hindi"], correct: 1, timeLimit: 20000 },
-  { q: "What is the hardest natural substance on Earth?", options: ["Diamond", "Quartz"], correct: 0, timeLimit: 15000 },
-  { q: "How many continents are there?", options: ["5", "6", "7", "8"], correct: 2, timeLimit: 20000 },
-  { q: "What gas do plants absorb from the atmosphere?", options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"], correct: 1, timeLimit: 20000 },
-  { q: "Which animal is the fastest on land?", options: ["Lion", "Cheetah"], correct: 1, timeLimit: 15000 },
+  { q: "сколько на др максов?", options: ["1", "2", "3", "4"], correct: 2, timeLimit: 20000 },
+  { q: "во сколько раз больше гостей на 22ом др чем на 21ом?", options: ["0.7", "1.2", "3", "6.3"], correct: 3, timeLimit: 20000 },
+  { q: "во сколько раз больше я заработала будучи 21летней чем 20летней?", options: ["0.5", "1", "2", "2.5"], correct: 0, timeLimit: 20000 },
+  { q: "минимальное количество работ одновременно будучи 21летней?", options: ["0", "1", "2", "3"], correct: 2, timeLimit: 20000 },
+  { q: "максимальное количество работ одновременно будучи 21летней?", options: ["2", "4", "6", "8"], correct: 2, timeLimit: 20000 },
+  { q: "do i prefer being unemployed (having 2 jobs) or employed (6 jobs)?", options: ["Unemployed (2 jobs)", "Employed (6 jobs)"], correct: 1, timeLimit: 15000 },
+  { q: "моя топ1 песня в спотике за 21летие?", options: ["Юморист", "Шейх", "The Fate of Ophelia", "Pop"], correct: 3, timeLimit: 20000 },
+  { q: "сколько раз я была в джиме?", options: ["2", "26", "51", "137"], correct: 2, timeLimit: 20000 },
+  { q: "какой из этих сериалов я НЕ смотрела будучи 21летней?", options: ["KUWTK", "Sam and Cat", "Heated Rivalry", "Bridgerton"], correct: 3, timeLimit: 20000 },
+  { q: "каким из этих хобби я НЕ занималась будучи 21летней?", options: ["Оригами", "Diamond painting", "Junk journal", "Cycling"], correct: 3, timeLimit: 20000 },
+  { q: "на скольки концертах я была будучи 21летней?", options: ["2", "6", "12", "20"], correct: 2, timeLimit: 20000 },
+  { q: "в скольки странах я была будучи 21летней (считая родину)?", options: ["2", "5", "7", "10"], correct: 3, timeLimit: 20000 },
 ];
 
 const CORS_HEADERS = {
